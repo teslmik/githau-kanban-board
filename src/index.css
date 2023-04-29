@@ -1,13 +1,41 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+main {
+  display: flex;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.layout {
+  min-height: 100vh;
+}
+
+.header-container {
+  margin: 0 auto;
+  width: 1192px;
+}
+
+.site-layout-content {
+  min-height: 100%;
+  padding: 24px;
+  margin: 0 auto;
+  max-width: 1192px;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.issues-column {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.ant-card .ant-card-head {
+  min-height: 40px;
+  padding: 0 16px;
+}
+
+.ant-card .ant-card-body {
+  padding: 8px 16px;
+}
+
+.ant-card p {
+  margin: 0;
 }
