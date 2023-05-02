@@ -3,19 +3,20 @@ main {
 }
 
 .layout {
-  min-height: 100vh;
+  height: 100vh;
+  max-height: 100vh;
 }
 
 .header-container {
   margin: 0 auto;
-  width: 1192px;
+  width: 1092px;
 }
 
 .site-layout-content {
   min-height: 100%;
   padding: 24px;
   margin: 0 auto;
-  max-width: 1192px;
+  max-width: 1092px;
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
@@ -38,4 +39,11 @@ main {
 
 .ant-card p {
   margin: 0;
+}
+
+.bread-crumbs-container{
+  display: flex;
+  align-items: center;
+  gap: 10px;  
+  margin-bottom: 16px;
 }

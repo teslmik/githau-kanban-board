@@ -1,9 +1,10 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
-// import { Provider } from 'react-redux';
+import { Provider } from 'react-redux';
 import ReactDOM from 'react-dom/client';
 
 import App from './App';
+import { store } from './redux/store';
 
 import 'antd/dist/reset.css';
 import './index.css';
@@ -14,9 +15,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      {/* <Provider store={store}> */}
+      <Provider store={store}>
         <App />
-      {/* </Provider> */}
+      </Provider>
     </BrowserRouter>
   </React.StrictMode>
 );

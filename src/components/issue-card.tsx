@@ -1,12 +1,34 @@
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import { Card } from 'antd';
 import React from 'react'
+import { diffDays } from '../helpers/helpers';
+import { ItemType } from '../types/types';
 
-const IssueCard: React.FC = () => {
+type Properties = {
+  cardData: ItemType;
+}
+
+const IssueCard: React.FC<Properties> = ({ cardData }) => {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition
+  } = useSortable({ id: cardData.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
   return (
-    <Card hoverable title="Some issue title" bordered={false} style={{ margin: '16px' }}>
-      <p>#315 opened 3 days ago</p>
-      <p>Admin | Comments: 3</p>
-    </Card>
+    <div style={style} ref={setNodeRef} {...attributes} {...listeners} >
+      <Card hoverable title={cardData.title} bordered={false} style={{ margin: '16px' }}>
+        <p>{`#${cardData.number} opened ${diffDays(cardData.createdAt)} days ago`}</p>
+        <p>{`${cardData.assignee || cardData.user} | Comments: ${cardData.comments}`}</p>
+      </Card>
+    </div>
   )
 }
 

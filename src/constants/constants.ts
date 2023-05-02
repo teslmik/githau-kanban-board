@@ -1,0 +1,1 @@
+export { columnsData } from './columns-data';

@@ -1,27 +1,49 @@
+import { useDroppable } from "@dnd-kit/core";
+import { SortableContext } from "@dnd-kit/sortable";
 import { Col, Row, Typography } from "antd";
+import { ColumnsDataType, ItemType } from "../types/types";
 import { IssueCard } from "./issue-card";
 
-const { Title } = Typography;
-
 type Properties = {
-  title: string;
+  column: ColumnsDataType;
+  cardsArray: ItemType[] | undefined;
 }
 
-const ColumnItem: React.FC<Properties> = ({ title }) => {
+const ColumnItem: React.FC<Properties> = ({ column, cardsArray }) => {
+  const { setNodeRef } = useDroppable({
+    id: column.id,
+  });
+
+  const columnStyle = {
+    backgroundColor: '#F5F5F5',
+    flex: '1 1 auto',
+    alignItems: 'flex-start',
+  }
+
   return (
     <div className="issues-column">
       <Row justify={"center"}>
         <Col>
           <Typography>
-            <Title level={3}>{title}</Title>
+            <Typography.Title level={3}>{column.name}</Typography.Title>
           </Typography>
         </Col>
       </Row>
-      <Row align={"middle"} style={{ backgroundColor: '#F5F5F5', flex: '1 1 auto', alignItems: 'flex-start' }}>
-        <Col style={{ flex: '1 1 auto' }}>
-          <IssueCard />
-        </Col>
-      </Row>
+      <SortableContext
+        id={column.id}
+        items={cardsArray ?? []}
+      >
+        <Row
+          align={"middle"}
+          style={columnStyle}
+        >
+          <Col ref={setNodeRef}>
+            {cardsArray?.map(elem => (
+              <IssueCard key={elem.id} cardData={elem} />
+            ))}
+          </Col>
+        </Row>
+      </SortableContext>
     </div>
   )
 }
