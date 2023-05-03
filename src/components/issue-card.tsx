@@ -28,6 +28,7 @@ const IssueCard: React.FC<Properties> = ({ cardData }) => {
     transition,
     position: PositionCard.RELATIVE,
     zIndex: 1,
+    maxWidth: 332
   };
   return (
     <div style={style} ref={setNodeRef} {...attributes} {...listeners} >
