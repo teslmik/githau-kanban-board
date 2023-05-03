@@ -1,27 +1,37 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, current, PayloadAction } from '@reduxjs/toolkit';
 import { ColumnValue, Status } from '../enums/enums';
-import { getFromLS } from '../helpers/get-from-ls.helper';
-import { itemStateType, ItemType } from '../types/types';
+import { ItemStateType, ItemType } from '../types/types';
 import { fetchIssues } from './actions';
 
 type initialStateType = {
-  items: itemStateType[] | [];
+  items: ItemStateType[] | [];
   status: Status;
 }
 
 const initialState: initialStateType = {
-  items: getFromLS(),
-  status: Status.LOADING
+  items: [],
+  status: Status.IDLE
 }
 
 export const issuesSlice = createSlice({
   name: 'issues',
   initialState,
   reducers: {
-    updateCards(state, action) {
-      const remainingRepo = state.items.filter(item => item.id !== action.payload.id);
-      console.log('remainingRepo: ', remainingRepo);
-      state.items = [...remainingRepo, action.payload.updatedCards];
+    updateCards: (state, action: PayloadAction<{ updatedCards: ItemType[][], id: string | undefined}>) => {
+      const currentRepo = current(state.items).filter(item => item.id === action.payload.id);
+      const { repoItems, ...repoData } = currentRepo[0];
+      const remainingRepo = current(state.items).filter(item => item.id !== action.payload.id);
+
+      state.items = [
+        ...remainingRepo,
+        {
+          ...repoData,
+          repoItems: {
+            todo: action.payload.updatedCards[0],
+            inProgress: action.payload.updatedCards[1],
+            done: action.payload.updatedCards[2],
+          }
+        }];
     }
   },
   extraReducers: (builder) => {
@@ -34,11 +44,11 @@ export const issuesSlice = createSlice({
       const { starsCount, ...repoItems } = action.payload;
 
       if (!state.items.some(item => item.id === `${repoName}/${projectName}`)) {
-        const newRepoItem: { [key: string]: ItemType[] } = {};
+        const newRepoItem: { [key in ColumnValue]: ItemType[] } = { todo: [], inProgress: [], done: [] };
 
         for (const prop in repoItems) {
           if (repoItems.hasOwnProperty(prop)) {
-            newRepoItem[prop] = repoItems[prop as ColumnValue].map((item) => ({
+            newRepoItem[prop as ColumnValue] = repoItems[prop as ColumnValue].map((item) => ({
               id: item.id,
               user: item.user.login,
               comments: item.comments,

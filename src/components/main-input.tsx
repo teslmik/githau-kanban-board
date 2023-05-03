@@ -1,7 +1,9 @@
 import { Button, Input, Space, Form, message } from 'antd';
+import { useSelector } from 'react-redux';
+
 import { parseGithubUrl } from '../helpers/helpers';
 import { fetchIssues } from '../redux/actions';
-import { useAppDispatch } from '../redux/store';
+import { RootState, useAppDispatch } from '../redux/store';
 
 type Properties = {
   setValue: React.Dispatch<React.SetStateAction<string>>;
@@ -9,6 +11,7 @@ type Properties = {
 
 const MainInput: React.FC<Properties> = ({ setValue }) => {
   const dispatch = useAppDispatch();
+  const { items } = useSelector((state: RootState) => state.issues);
   const [form] = Form.useForm();
 
   const onFinishFailed = () => {
@@ -16,7 +19,12 @@ const MainInput: React.FC<Properties> = ({ setValue }) => {
   };
 
   const handleClick = () => {
-    dispatch(fetchIssues(parseGithubUrl(form.getFieldsValue().url)));
+    const itemsIds = items.map(item => item.id);
+    const { repoName, projectName } = parseGithubUrl(form.getFieldsValue().url);
+    
+    if (!itemsIds.includes(`${repoName}/${projectName}`)) { 
+      dispatch(fetchIssues(parseGithubUrl(form.getFieldsValue().url)));
+    }
     setValue(form.getFieldsValue().url);
     form.resetFields();
   };

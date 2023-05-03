@@ -3,7 +3,6 @@ import {
   DndContext,
   DragEndEvent,
   DragOverEvent,
-  Over,
   UniqueIdentifier,
 } from '@dnd-kit/core';
 import { arrayMove } from '@dnd-kit/sortable';
@@ -13,20 +12,16 @@ import { useSelector } from 'react-redux';
 
 import { ColumnItem, MainBreadcrumbs, MainHeader, MainInput } from '../components/components';
 import { columnsData } from '../constants/constants';
-import { Status } from '../enums/enums';
-import { arraysEqual, parseGithubUrl } from '../helpers/helpers';
+import { parseGithubUrl, updateIfArraysNotEqual } from '../helpers/helpers';
 import { RootState, useAppDispatch } from '../redux/store';
-import { ColumnsDataType, itemStateType, ItemType } from '../types/types';
-import { updateCards } from '../redux/slice';
+import { ColumnsDataType, ItemType } from '../types/types';
 
 const Home: React.FC = () => {
   const dispatch = useAppDispatch();
   const [lists, setLists] = useState<ColumnsDataType[]>(columnsData);
-  const [issues, setIssues] = useState<itemStateType>();
   const [value, setValue] = useState('');
 
   const { items, status } = useSelector((state: RootState) => state.issues);
-  console.log('items: ', items);
 
   const {
     token: { colorBgContainer },
@@ -67,13 +62,10 @@ const Home: React.FC = () => {
 
       const updateOverContainer = {
         ...overContainer,
-        cards: [
-          ...overContainer.cards.filter(card => card.id !== id),
-          activeCard,
-        ],
+        cards: [...overContainer.cards.filter((card) => card.id !== id), activeCard],
       };
 
-      const updateLists = prev.map((list) => {
+      const updatedLists = prev.map((list) => {
         if (list.id === activeContainer.id) {
           return updateActiveList;
         } else if (list.id === overContainer.id) {
@@ -83,14 +75,16 @@ const Home: React.FC = () => {
         }
       });
 
-      return updateLists;
+      updateIfArraysNotEqual(currentIssues!, updatedLists, dispatch);
+
+      return updatedLists;
     });
   };
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
     const { id } = active;
-    const { id: overId } = over as Over;
+    const { id: overId } = over!;
 
     const activeContainer = findContainer(id);
     const overContainer = findContainer(overId);
@@ -104,8 +98,8 @@ const Home: React.FC = () => {
     const overCards = lists.find((list) => list.id === overContainer.id)?.cards ?? [];
     const overCard = overCards.find((card) => card.id === overId)!;
 
-    const activeIndex = activeCards.indexOf(activeCard as ItemType);
-    const overIndex = overCards.indexOf(overCard as ItemType);
+    const activeIndex = activeCards.indexOf(activeCard);
+    const overIndex = overCards.indexOf(overCard);
 
     if (activeIndex !== overIndex) {
       setLists((lists) => {
@@ -122,25 +116,18 @@ const Home: React.FC = () => {
           }
         });
 
+        updateIfArraysNotEqual(currentIssues!, updatedLists, dispatch);
+
         return updatedLists;
       });
     }
-
-    const currentIssuesCards = Object.values(currentIssues?.repoItems ?? {});
-    const updatedCards = lists.map(list => list.cards);
-    const isarraysEqual = arraysEqual(currentIssuesCards, updatedCards);
-
-    if (!isarraysEqual.equal) {
-      dispatch(updateCards({updatedCards, id: currentIssues?.id}))
-    };
   };
 
   useEffect(() => {
     if (currentIssues) {
-      setIssues(currentIssues);
       setLists((prevArray) => {
         return prevArray.map((list) => {
-          const cards = issues?.repoItems[list.value] ?? [];
+          const cards = currentIssues.repoItems[list.value] ?? [];
           return {
             ...list,
             cards: [...cards],
@@ -148,7 +135,7 @@ const Home: React.FC = () => {
         });
       });
     }
-  }, [currentIssues, issues?.repoItems]);
+  }, [currentIssues]);
 
   return (
     <Layout className="layout">
@@ -157,11 +144,11 @@ const Home: React.FC = () => {
         <div className="site-layout-content" style={{ background: colorBgContainer }}>
           <MainInput setValue={setValue} />
           <Divider style={{ marginTop: 0 }} />
-          {status !== Status.LOADING && (
+          {value && (
             <MainBreadcrumbs
               repoName={repoName}
               projectName={projectName}
-              stars={issues?.starsCount}
+              stars={currentIssues?.starsCount}
             />
           )}
           <DndContext
@@ -169,9 +156,9 @@ const Home: React.FC = () => {
             onDragOver={handleDragOver}
             onDragEnd={handleDragEnd}>
             <Row gutter={24} style={{ flex: '1 1 auto' }}>
-              {lists?.map((column) => (
+              {lists.map((column) => (
                 <Col key={column.id} span={8}>
-                  <ColumnItem column={column} cardsArray={column.cards} />
+                    <ColumnItem column={column} cardsArray={column.cards} status={status} />
                 </Col>
               ))}
             </Row>
