@@ -17,19 +17,19 @@ const fetchIssues = createAsyncThunk<
 
   const { data: todo } = await axios.get(
     `${ApiUrl.GIT_API}${repoName}/${projectName}/issues?state=open&assignee=none&${ApiUrl.PAGE_QUERY}`,
-    headerToken ?? '',
+    headerToken && headerToken,
   );
   const { data: inProgress } = await axios.get(
     `${ApiUrl.GIT_API}${repoName}/${projectName}/issues?state=open&assignee=*&${ApiUrl.PAGE_QUERY}`,
-    headerToken  ?? '',
+    headerToken && headerToken,
   );
   const { data: done } = await axios.get(
     `${ApiUrl.GIT_API}${repoName}/${projectName}/issues?state=closed&${ApiUrl.PAGE_QUERY}`,
-    headerToken  ?? '',
+    headerToken && headerToken,
   );
   const { data: starsCount } = await axios.get(
     `${ApiUrl.GIT_API}${repoName}/${projectName}`,
-    headerToken  ?? '',
+    headerToken && headerToken,
   );
   return {
     todo,
