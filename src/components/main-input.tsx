@@ -19,10 +19,10 @@ const MainInput: React.FC<Properties> = ({ setValue }) => {
   };
 
   const handleClick = () => {
-    const itemsIds = items.map(item => item.id);
+    const itemsIds = items.map((item) => item.id);
     const { repoName, projectName } = parseGithubUrl(form.getFieldsValue().url);
-    
-    if (!itemsIds.includes(`${repoName}/${projectName}`)) { 
+
+    if (!itemsIds.includes(`${repoName}/${projectName}`)) {
       dispatch(fetchIssues(parseGithubUrl(form.getFieldsValue().url)));
     }
     setValue(form.getFieldsValue().url);
@@ -30,24 +30,28 @@ const MainInput: React.FC<Properties> = ({ setValue }) => {
   };
 
   return (
-    <Form form={form} onFinish={handleClick} onFinishFailed={onFinishFailed} >
+    <Form form={form} onFinish={handleClick} onFinishFailed={onFinishFailed}>
       <Space.Compact style={{ width: '100%' }}>
         <Form.Item
           name="url"
           rules={[
             { required: true },
-            { pattern: /^https:\/\/github.com\/([\w-]+)\/([\w-]+)\.*/, message: 'Invalid GitHub URL' },
+            {
+              pattern: /^https:\/\/github.com\/([\w-]+)\/([\w-]+)\.*/,
+              message: 'Invalid GitHub URL',
+            },
           ]}
-          style={{ width: '100%', marginBottom: 0 }}
-        >
+          style={{ width: '100%', marginBottom: 0 }}>
           <Input placeholder="Enter repo URL" />
         </Form.Item>
         <Form.Item>
-          <Button disabled={!form.getFieldError('url')} htmlType="submit" type="primary">Load Issue</Button>
+          <Button disabled={!form.getFieldError('url')} htmlType="submit" type="primary">
+            Load Issue
+          </Button>
         </Form.Item>
       </Space.Compact>
     </Form>
-  )
-}
+  );
+};
 
 export { MainInput };

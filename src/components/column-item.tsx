@@ -34,7 +34,10 @@ const ColumnItem: React.FC<Properties> = ({ column, cardsArray, status }) => {
           </Typography>
         </Col>
       </Row>
-      <SortableContext id={column.id} strategy={verticalListSortingStrategy} items={cardsArray ?? []}>
+      <SortableContext
+        id={column.id}
+        strategy={verticalListSortingStrategy}
+        items={cardsArray ?? []}>
         <Row align={'middle'} style={columnStyle}>
           {!isLoading && cardsArray.length > 0 ? (
             <Col ref={setNodeRef} style={{ flex: '1 1 auto' }} data-test-column-id={column.id}>
@@ -43,7 +46,7 @@ const ColumnItem: React.FC<Properties> = ({ column, cardsArray, status }) => {
               ))}
             </Col>
           ) : isLoading ? (
-            <Spin size={'large'} style={{paddingTop: 32}} />
+            <Spin size={'large'} style={{ paddingTop: 32 }} />
           ) : (
             <Empty style={{ marginTop: 32 }} />
           )}

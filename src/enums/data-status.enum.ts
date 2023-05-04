@@ -2,7 +2,7 @@ enum Status {
   IDLE = 'idle',
   LOADING = 'loading',
   SUCCESS = 'success',
-  ERROR = 'error'
+  ERROR = 'error',
 }
 
 export { Status };

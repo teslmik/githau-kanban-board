@@ -16,12 +16,12 @@ import issuesReducer from './slice';
 
 const rootReducers = combineReducers({
   issues: issuesReducer,
-})
+});
 
 const persistConfig = {
   key: 'root',
   storage,
-}
+};
 
 const persistedReducer = persistReducer(persistConfig, rootReducers);
 

@@ -15,7 +15,7 @@ const MainHeader: React.FC = () => {
         </Layout.Header>
       </Col>
     </Row>
-  )
-}
+  );
+};
 
 export { MainHeader };

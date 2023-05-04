@@ -7,6 +7,6 @@ type ItemType = {
   state: string;
   assignee: string;
   createdAt: string;
-}
+};
 
 export type { ItemType };

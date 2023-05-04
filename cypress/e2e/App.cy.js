@@ -19,7 +19,6 @@ describe('App E2E', () => {
   });
 
   it('should load github repo & drag and drop', () => {
-
     cy.intercept('GET', 'https://api.github.com/repos/facebook/react/*').as('load');
     cy.get('input[type="text"]').type('https://github.com/facebook/react');
     cy.get('input[type="text"]').should('have.value', 'https://github.com/facebook/react');

@@ -6,21 +6,24 @@ import { fetchIssues } from './actions';
 type initialStateType = {
   items: ItemStateType[] | [];
   status: Status;
-}
+};
 
 const initialState: initialStateType = {
   items: [],
-  status: Status.IDLE
-}
+  status: Status.IDLE,
+};
 
 export const issuesSlice = createSlice({
   name: 'issues',
   initialState,
   reducers: {
-    updateCards: (state, action: PayloadAction<{ updatedCards: ItemType[][], id: string | undefined}>) => {
-      const currentRepo = current(state.items).filter(item => item.id === action.payload.id);
+    updateCards: (
+      state,
+      action: PayloadAction<{ updatedCards: ItemType[][]; id: string | undefined }>,
+    ) => {
+      const currentRepo = current(state.items).filter((item) => item.id === action.payload.id);
       const { repoItems, ...repoData } = currentRepo[0];
-      const remainingRepo = current(state.items).filter(item => item.id !== action.payload.id);
+      const remainingRepo = current(state.items).filter((item) => item.id !== action.payload.id);
 
       state.items = [
         ...remainingRepo,
@@ -30,9 +33,10 @@ export const issuesSlice = createSlice({
             todo: action.payload.updatedCards[0],
             inProgress: action.payload.updatedCards[1],
             done: action.payload.updatedCards[2],
-          }
-        }];
-    }
+          },
+        },
+      ];
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchIssues.pending, (state) => {
@@ -43,8 +47,12 @@ export const issuesSlice = createSlice({
       const { repoName, projectName } = action.meta.arg;
       const { starsCount, ...repoItems } = action.payload;
 
-      if (!state.items.some(item => item.id === `${repoName}/${projectName}`)) {
-        const newRepoItem: { [key in ColumnValue]: ItemType[] } = { todo: [], inProgress: [], done: [] };
+      if (!state.items.some((item) => item.id === `${repoName}/${projectName}`)) {
+        const newRepoItem: { [key in ColumnValue]: ItemType[] } = {
+          todo: [],
+          inProgress: [],
+          done: [],
+        };
 
         for (const prop in repoItems) {
           if (repoItems.hasOwnProperty(prop)) {
@@ -74,7 +82,7 @@ export const issuesSlice = createSlice({
       state.status = Status.ERROR;
       state.items = [...state.items];
     });
-  }
+  },
 });
 
 export const { updateCards } = issuesSlice.actions;

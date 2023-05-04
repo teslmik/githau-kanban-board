@@ -24,9 +24,7 @@ const Home: React.FC = () => {
   const dispatch = useAppDispatch();
   const [lists, setLists] = useState<ColumnsDataType[]>(columnsData);
   const [value, setValue] = useState('');
-  const sensors = useSensors(
-    useSensor(MouseSensor),
-  );
+  const sensors = useSensors(useSensor(MouseSensor));
 
   const { items, status } = useSelector((state: RootState) => state.issues);
 

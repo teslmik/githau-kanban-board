@@ -40,10 +40,10 @@ main {
   margin: 0;
 }
 
-.bread-crumbs-container{
+.bread-crumbs-container {
   display: flex;
   align-items: center;
-  gap: 10px;  
+  gap: 10px;
   margin-bottom: 16px;
 }
 

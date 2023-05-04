@@ -1,7 +1,7 @@
 type GithubUrlObject = {
   repoName: string;
   projectName: string;
-}
+};
 
 const parseGithubUrl = (url: string): GithubUrlObject => {
   const regex = /^https:\/\/github.com\/([\w-]+)\/([\w-]+)\.*/;
@@ -15,6 +15,6 @@ const parseGithubUrl = (url: string): GithubUrlObject => {
   const projectName = match[2];
 
   return { repoName, projectName };
-}
+};
 
 export { parseGithubUrl };

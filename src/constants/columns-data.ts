@@ -1,5 +1,5 @@
-import { ColumnValue } from "../enums/enums";
-import { ColumnsDataType } from "../types/types";
+import { ColumnValue } from '../enums/enums';
+import { ColumnsDataType } from '../types/types';
 
 const columnsData: ColumnsDataType[] = [
   {
@@ -19,7 +19,7 @@ const columnsData: ColumnsDataType[] = [
     name: 'Done',
     value: ColumnValue.DONE,
     cards: [],
-  }
-]
+  },
+];
 
 export { columnsData };
