@@ -37,7 +37,7 @@ const ColumnItem: React.FC<Properties> = ({ column, cardsArray, status }) => {
       <SortableContext id={column.id} strategy={verticalListSortingStrategy} items={cardsArray ?? []}>
         <Row align={'middle'} style={columnStyle}>
           {!isLoading && cardsArray.length > 0 ? (
-            <Col ref={setNodeRef} style={{ flex: '1 1 auto' }}>
+            <Col ref={setNodeRef} style={{ flex: '1 1 auto' }} data-test-column-id={column.id}>
               {cardsArray?.map((elem) => (
                 <IssueCard key={elem.id} cardData={elem} />
               ))}

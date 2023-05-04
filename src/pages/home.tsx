@@ -3,7 +3,10 @@ import {
   DndContext,
   DragEndEvent,
   DragOverEvent,
+  MouseSensor,
   UniqueIdentifier,
+  useSensor,
+  useSensors,
 } from '@dnd-kit/core';
 import { arrayMove } from '@dnd-kit/sortable';
 import { Col, Divider, Layout, Row, theme } from 'antd';
@@ -21,6 +24,9 @@ const Home: React.FC = () => {
   const dispatch = useAppDispatch();
   const [lists, setLists] = useState<ColumnsDataType[]>(columnsData);
   const [value, setValue] = useState('');
+  const sensors = useSensors(
+    useSensor(MouseSensor),
+  );
 
   const { items, status } = useSelector((state: RootState) => state.issues);
 
@@ -153,13 +159,14 @@ const Home: React.FC = () => {
             />
           )}
           <DndContext
+            sensors={sensors}
             collisionDetection={closestCorners}
             onDragOver={handleDragOver}
             onDragEnd={handleDragEnd}>
             <Row gutter={24} style={{ flex: '1 1 auto' }}>
               {lists.map((column) => (
                 <Col key={column.id} span={8}>
-                    <ColumnItem column={column} cardsArray={column.cards} status={status} />
+                  <ColumnItem column={column} cardsArray={column.cards} status={status} />
                 </Col>
               ))}
             </Row>

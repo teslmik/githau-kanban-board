@@ -31,7 +31,7 @@ const IssueCard: React.FC<Properties> = ({ cardData }) => {
     maxWidth: 332
   };
   return (
-    <div style={style} ref={setNodeRef} {...attributes} {...listeners} >
+    <div style={style} ref={setNodeRef} {...attributes} {...listeners} data-test-card-id={cardData.id} >
       <Card hoverable title={cardData.title} bordered={false} style={{ margin: '16px' }}>
         <p>{`#${cardData.number} opened ${diffDays(cardData.createdAt)} days ago`}</p>
         <p>{`${cardData.assignee || cardData.user} | Comments: ${cardData.comments}`}</p>
