@@ -1,5 +1,5 @@
 import { useDroppable } from '@dnd-kit/core';
-import { SortableContext } from '@dnd-kit/sortable';
+import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { Col, Empty, Row, Spin, Typography } from 'antd';
 
 import { Status } from '../enums/enums';
@@ -34,7 +34,7 @@ const ColumnItem: React.FC<Properties> = ({ column, cardsArray, status }) => {
           </Typography>
         </Col>
       </Row>
-      <SortableContext id={column.id} items={cardsArray ?? []}>
+      <SortableContext id={column.id} strategy={verticalListSortingStrategy} items={cardsArray ?? []}>
         <Row align={'middle'} style={columnStyle}>
           {!isLoading && cardsArray.length > 0 ? (
             <Col ref={setNodeRef} style={{ flex: '1 1 auto' }}>

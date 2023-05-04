@@ -46,3 +46,11 @@ main {
   gap: 10px;  
   margin-bottom: 16px;
 }
+
+.not-found-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+}

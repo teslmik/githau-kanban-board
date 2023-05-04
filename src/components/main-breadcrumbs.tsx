@@ -2,6 +2,7 @@ import { StarFilled } from "@ant-design/icons";
 import { Breadcrumb } from "antd";
 
 const MainBreadcrumbs: React.FC<{ repoName: string, projectName: string, stars?: number }> = ({ repoName, projectName, stars }) => {
+  console.log('stars: ', stars);
   return (
     <div className="bread-crumbs-container">
       <Breadcrumb
@@ -20,7 +21,7 @@ const MainBreadcrumbs: React.FC<{ repoName: string, projectName: string, stars?:
       <div>
         <StarFilled style={{ color: "yellow", marginRight: 5 }} />
         <span style={{ color: 'rgba(0, 0, 0, 0.45)' }}>
-          {stars && `${Math.round(stars / 1000).toString()}K`}
+          {stars && (stars > 1000 ? `${Math.round(stars / 1000).toString()}K stars` : `${stars} stars`)}
         </span>
       </div>
     </div>

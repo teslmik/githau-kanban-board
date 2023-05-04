@@ -1,5 +1,5 @@
 import {
-  closestCenter,
+  closestCorners,
   DndContext,
   DragEndEvent,
   DragOverEvent,
@@ -12,6 +12,7 @@ import { useSelector } from 'react-redux';
 
 import { ColumnItem, MainBreadcrumbs, MainHeader, MainInput } from '../components/components';
 import { columnsData } from '../constants/constants';
+import { Status } from '../enums/enums';
 import { parseGithubUrl, updateIfArraysNotEqual } from '../helpers/helpers';
 import { RootState, useAppDispatch } from '../redux/store';
 import { ColumnsDataType, ItemType } from '../types/types';
@@ -57,7 +58,7 @@ const Home: React.FC = () => {
 
       const updateActiveList = {
         ...activeContainer,
-        cards: activeContainer.cards.filter((card) => card.id !== active.id),
+        cards: activeContainer.cards.filter((card) => card.id !== id),
       };
 
       const updateOverContainer = {
@@ -144,7 +145,7 @@ const Home: React.FC = () => {
         <div className="site-layout-content" style={{ background: colorBgContainer }}>
           <MainInput setValue={setValue} />
           <Divider style={{ marginTop: 0 }} />
-          {value && (
+          {value && status !== Status.LOADING && (
             <MainBreadcrumbs
               repoName={repoName}
               projectName={projectName}
@@ -152,7 +153,7 @@ const Home: React.FC = () => {
             />
           )}
           <DndContext
-            collisionDetection={closestCenter}
+            collisionDetection={closestCorners}
             onDragOver={handleDragOver}
             onDragEnd={handleDragEnd}>
             <Row gutter={24} style={{ flex: '1 1 auto' }}>
