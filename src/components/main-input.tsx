@@ -14,7 +14,6 @@ const MainInput: React.FC<Properties> = ({ setValue }) => {
   const dispatch = useAppDispatch();
   const { items } = useSelector((state: RootState) => state.issues);
   const [form] = Form.useForm();
-  console.log('form: ', form);
 
   const inputRegex = /^https:\/\/github.com\/([\w-]+)\/([\w-]+)\.*/;
 
@@ -56,7 +55,8 @@ const MainInput: React.FC<Properties> = ({ setValue }) => {
                 !!form.getFieldsError().filter(({ errors }) => errors.length).length
               }
               htmlType="submit"
-              type="primary">
+              type="primary"
+            >
               Load Issue
             </Button>
           )}

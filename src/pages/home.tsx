@@ -9,14 +9,15 @@ import {
   useSensors
 } from '@dnd-kit/core';
 import { arrayMove } from '@dnd-kit/sortable';
-import { Col, Divider, Layout, Row, theme } from 'antd';
-import React, { useEffect, useState } from 'react';
+import { Col, Divider, Layout, message, Row, theme } from 'antd';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import { ColumnItem, MainBreadcrumbs, MainHeader, MainInput } from '../components/components';
 import { columnsData } from '../constants/constants';
 import { Status } from '../enums/enums';
 import { parseGithubUrl, updateIfArraysNotEqual } from '../helpers/helpers';
+import { clearError } from '../redux/slice';
 import { type RootState, useAppDispatch } from '../redux/store';
 import { type ColumnsDataType, type ItemType } from '../types/types';
 
@@ -24,9 +25,17 @@ const Home: React.FC = () => {
   const dispatch = useAppDispatch();
   const [lists, setLists] = useState<ColumnsDataType[]>(columnsData);
   const [value, setValue] = useState('');
+  const [messageApi, contextHolder] = message.useMessage();
   const sensors = useSensors(useSensor(MouseSensor));
 
-  const { items, status } = useSelector((state: RootState) => state.issues);
+  const { items, status, error } = useSelector((state: RootState) => state.issues);
+
+  const errorMessage = useCallback(() => {
+    messageApi.open({
+      type: 'error',
+      content: error?.message,
+    });
+  }, [error?.message, messageApi]);
 
   const {
     token: { colorBgContainer },
@@ -143,8 +152,16 @@ const Home: React.FC = () => {
     }
   }, [currentIssues]);
 
+  useEffect(() => {
+    if (status === Status.ERROR) {
+      errorMessage();
+      void dispatch(clearError());
+    }
+  }, [dispatch, errorMessage, status]);
+
   return (
     <Layout className="layout">
+      {contextHolder}
       <MainHeader />
       <Layout.Content style={{ padding: '0 50px' }}>
         <div className="site-layout-content" style={{ background: colorBgContainer }}>

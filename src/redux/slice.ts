@@ -6,11 +6,13 @@ import { fetchIssues } from './actions';
 type initialStateType = {
   items: ItemStateType[] | [];
   status: Status;
+  error: { message: string } | null;
 };
 
 const initialState: initialStateType = {
   items: [],
   status: Status.IDLE,
+  error: null,
 };
 
 export const issuesSlice = createSlice({
@@ -37,11 +39,16 @@ export const issuesSlice = createSlice({
         },
       ];
     },
+    clearError: (state) => {
+      state.error = null;
+      state.status = Status.IDLE;
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(fetchIssues.pending, (state) => {
       state.status = Status.LOADING;
       state.items = [...state.items];
+      state.error = null;
     });
     builder.addCase(fetchIssues.fulfilled, (state, action) => {
       const { repoName, projectName } = action.meta.arg;
@@ -78,13 +85,15 @@ export const issuesSlice = createSlice({
       }
       state.status = Status.SUCCESS;
     });
-    builder.addCase(fetchIssues.rejected, (state) => {
+    builder.addCase(fetchIssues.rejected, (state, action) => {
+      console.log('action: ', action);
       state.status = Status.ERROR;
       state.items = [...state.items];
+      state.error = action.payload as {message: string};
     });
   },
 });
 
-export const { updateCards } = issuesSlice.actions;
+export const { updateCards, clearError } = issuesSlice.actions;
 
 export default issuesSlice.reducer;
