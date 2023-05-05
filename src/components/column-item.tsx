@@ -1,10 +1,10 @@
 import { useDroppable } from '@dnd-kit/core';
-import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { Col, Empty, Row, Spin, Typography } from 'antd';
+import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 
 import { Status } from '../enums/enums';
-import { ColumnsDataType, ItemType } from '../types/types';
 import { IssueCard } from './issue-card';
+import { ColumnsDataType, ItemType } from '../types/types';
 
 type Properties = {
   column: ColumnsDataType;

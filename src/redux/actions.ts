@@ -1,9 +1,9 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import { ApiUrl } from '../enums/enums';
-import { axiosInstance } from '../helpers/helpers';
-import { Issue } from '../types/issue.type';
 import { RootState } from './store';
+import { ApiUrl } from '../enums/enums';
+import { Issue } from '../types/issue.type';
+import { axiosInstance } from '../helpers/helpers';
 
 type returnType = {
   todo: Issue[];

@@ -1,5 +1,5 @@
-import { StarFilled } from '@ant-design/icons';
 import { Breadcrumb } from 'antd';
+import { StarFilled } from '@ant-design/icons';
 
 const MainBreadcrumbs: React.FC<{ repoName: string; projectName: string; stars?: number }> = ({
   repoName,

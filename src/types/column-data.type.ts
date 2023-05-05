@@ -1,5 +1,5 @@
-import { ColumnValue } from '../enums/enums';
 import { ItemType } from './types';
+import { ColumnValue } from '../enums/enums';
 
 type ColumnsDataType = {
   id: string;

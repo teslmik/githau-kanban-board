@@ -1,25 +1,25 @@
 import {
   closestCorners,
   DndContext,
+  useSensor,
+  useSensors,
+  MouseSensor,
   type DragEndEvent,
   type DragOverEvent,
-  MouseSensor,
   type UniqueIdentifier,
-  useSensor,
-  useSensors
 } from '@dnd-kit/core';
-import { arrayMove } from '@dnd-kit/sortable';
-import { Col, Divider, Layout, message, Row, theme } from 'antd';
-import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { arrayMove } from '@dnd-kit/sortable';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Col, Divider, Layout, message, Row, theme } from 'antd';
 
-import { ColumnItem, MainBreadcrumbs, MainHeader, MainInput } from '../components/components';
-import { columnsData } from '../constants/constants';
 import { Status } from '../enums/enums';
-import { parseGithubUrl, updateIfArraysNotEqual } from '../helpers/helpers';
 import { clearError } from '../redux/slice';
+import { columnsData } from '../constants/constants';
 import { type RootState, useAppDispatch } from '../redux/store';
 import { type ColumnsDataType, type ItemType } from '../types/types';
+import { parseGithubUrl, updateIfArraysNotEqual } from '../helpers/helpers';
+import { ColumnItem, MainBreadcrumbs, MainHeader, MainInput } from '../components/components';
 
 const Home: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -46,7 +46,6 @@ const Home: React.FC = () => {
   const currentIssues = items.find((item) => item.id === `${repoName}/${projectName}`);
 
   const findContainer = (id: UniqueIdentifier): ColumnsDataType | undefined => {
-
     if (lists.some((list) => list.cards && list.cards.some((card) => card.id === id))) {
       return lists.find((list) => list.cards.some((card) => card.id === id));
     }

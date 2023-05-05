@@ -1,9 +1,9 @@
 import React from 'react';
-import { Button, Input, Space, Form, message } from 'antd';
 import { useSelector } from 'react-redux';
+import { Button, Input, Space, Form, message } from 'antd';
 
-import { parseGithubUrl } from '../helpers/helpers';
 import { fetchIssues } from '../redux/actions';
+import { parseGithubUrl } from '../helpers/helpers';
 import { type RootState, useAppDispatch } from '../redux/store';
 
 interface Properties {

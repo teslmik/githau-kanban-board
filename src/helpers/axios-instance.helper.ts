@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 import { ApiUrl } from '../enums/enums';
 
 const axiosInstance = axios.create({

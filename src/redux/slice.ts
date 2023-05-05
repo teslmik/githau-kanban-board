@@ -1,7 +1,8 @@
 import { createSlice, current, PayloadAction } from '@reduxjs/toolkit';
+
+import { fetchIssues } from './actions';
 import { ColumnValue, Status } from '../enums/enums';
 import { ItemStateType, ItemType } from '../types/types';
-import { fetchIssues } from './actions';
 
 type initialStateType = {
   items: ItemStateType[] | [];
@@ -42,7 +43,7 @@ export const issuesSlice = createSlice({
     clearError: (state) => {
       state.error = null;
       state.status = Status.IDLE;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchIssues.pending, (state) => {
@@ -89,7 +90,7 @@ export const issuesSlice = createSlice({
       console.log('action: ', action);
       state.status = Status.ERROR;
       state.items = [...state.items];
-      state.error = action.payload as {message: string};
+      state.error = action.payload as { message: string };
     });
   },
 });

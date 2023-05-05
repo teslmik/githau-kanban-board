@@ -1,7 +1,7 @@
-import { updateCards } from '../redux/slice';
 import type store from '../redux/store';
-import { ColumnsDataType, ItemStateType } from '../types/types';
 import { arraysEqual } from './helpers';
+import { updateCards } from '../redux/slice';
+import { ColumnsDataType, ItemStateType } from '../types/types';
 
 const updateIfArraysNotEqual = (
   currentIssues: ItemStateType,
