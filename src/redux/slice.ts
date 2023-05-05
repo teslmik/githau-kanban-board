@@ -87,7 +87,6 @@ export const issuesSlice = createSlice({
       state.status = Status.SUCCESS;
     });
     builder.addCase(fetchIssues.rejected, (state, action) => {
-      console.log('action: ', action);
       state.status = Status.ERROR;
       state.items = [...state.items];
       state.error = action.payload as { message: string };
