@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+
 import { ApiUrl } from '../enums/enums';
+import { axiosInstance } from '../helpers/helpers';
 import { Issue } from '../types/issue.type';
 import { RootState } from './store';
 
@@ -16,33 +17,22 @@ type returnType = {
 const fetchIssues = createAsyncThunk<returnType, Record<string, string>, { state: RootState }>(
   'issues/fetchIssuesStatus',
   async ({ repoName, projectName }) => {
-    // const headerToken = {
-    //   headers: {
-    //     'authorization': `Bearer ${process.env.REACT_APP_GITHUB_TOKEN}`,
-    //   },
-    // };
+    const [todo, inProgress, done, starsCount] = await Promise.all([
+      axiosInstance.get(
+        `${repoName}/${projectName}/issues?state=open&assignee=none&${ApiUrl.PAGE_QUERY}`,
+      ),
+      axiosInstance.get(
+        `${repoName}/${projectName}/issues?state=open&assignee=*&${ApiUrl.PAGE_QUERY}`,
+      ),
+      axiosInstance.get(`${repoName}/${projectName}/issues?state=closed&${ApiUrl.PAGE_QUERY}`),
+      axiosInstance.get(`${repoName}/${projectName}`),
+    ]);
 
-    const { data: todo } = await axios.get(
-      `${ApiUrl.GIT_API}${repoName}/${projectName}/issues?state=open&assignee=none&${ApiUrl.PAGE_QUERY}`,
-      // headerToken,
-    );
-    const { data: inProgress } = await axios.get(
-      `${ApiUrl.GIT_API}${repoName}/${projectName}/issues?state=open&assignee=*&${ApiUrl.PAGE_QUERY}`,
-      // headerToken,
-    );
-    const { data: done } = await axios.get(
-      `${ApiUrl.GIT_API}${repoName}/${projectName}/issues?state=closed&${ApiUrl.PAGE_QUERY}`,
-      // headerToken,
-    );
-    const { data: starsCount } = await axios.get(
-      `${ApiUrl.GIT_API}${repoName}/${projectName}`,
-      // headerToken,
-    );
     return {
-      todo,
-      inProgress,
-      done,
-      starsCount,
+      todo: todo.data,
+      inProgress: inProgress.data,
+      done: done.data,
+      starsCount: starsCount.data,
     };
   },
 );
