@@ -20,19 +20,19 @@ Cypress.Commands.add(
   {
     prevSubject: 'element',
   },
-  (subject, x, y, { delay = 100 } = {}) => {
+  (subject, x: number, y: number, options?: { delay: number }) => {
     cy.wrap(subject, { log: false })
       .then((subject) => {
         const initialRect = subject.get(0).getBoundingClientRect();
         const windowScroll = getDocumentScroll();
 
-        return [subject, initialRect, windowScroll];
+        return [subject, initialRect, windowScroll] as const;
       })
       .then(([subject, initialRect, initialWindowScroll]) => {
         // eslint-disable-next-line cypress/no-unnecessary-waiting, cypress/unsafe-to-chain-command
         cy.wrap(subject)
           .trigger('mousedown', { force: true })
-          .wait(delay, { log: Boolean(delay) })
+          .wait(options?.delay || 0, { log: Boolean(options?.delay) })
           .trigger('mousemove', {
             force: true,
             clientX: Math.floor(initialRect.left + initialRect.width / 2 + x / 2),
@@ -59,7 +59,7 @@ Cypress.Commands.add(
               y: Math.round(finalRect.top - initialRect.top - windowScrollDelta.y),
             };
 
-            return [subject, { initialRect, finalRect, delta }];
+            return [subject, { initialRect, finalRect, delta }] as const;
           });
       });
   },

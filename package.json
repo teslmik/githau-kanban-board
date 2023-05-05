@@ -12,7 +12,6 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.5.2",
-    "@types/node": "^16.18.25",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.1",
     "antd": "^5.4.6",
@@ -52,6 +51,7 @@
     ]
   },
   "devDependencies": {
+    "@types/node": "^20.0.0",
     "cypress": "^12.11.0",
     "eslint-plugin-cypress": "^2.13.3"
   }
