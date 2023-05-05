@@ -1,7 +1,7 @@
+import React from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { Card } from 'antd';
-import React from 'react';
 
 import { diffDays } from '../helpers/helpers';
 import { ItemType } from '../types/types';

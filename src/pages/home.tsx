@@ -1,24 +1,24 @@
 import {
   closestCorners,
   DndContext,
-  DragEndEvent,
-  DragOverEvent,
+  type DragEndEvent,
+  type DragOverEvent,
   MouseSensor,
-  UniqueIdentifier,
+  type UniqueIdentifier,
   useSensor,
-  useSensors,
+  useSensors
 } from '@dnd-kit/core';
 import { arrayMove } from '@dnd-kit/sortable';
 import { Col, Divider, Layout, Row, theme } from 'antd';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import { ColumnItem, MainBreadcrumbs, MainHeader, MainInput } from '../components/components';
 import { columnsData } from '../constants/constants';
 import { Status } from '../enums/enums';
 import { parseGithubUrl, updateIfArraysNotEqual } from '../helpers/helpers';
-import { RootState, useAppDispatch } from '../redux/store';
-import { ColumnsDataType, ItemType } from '../types/types';
+import { type RootState, useAppDispatch } from '../redux/store';
+import { type ColumnsDataType, type ItemType } from '../types/types';
 
 const Home: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -36,7 +36,8 @@ const Home: React.FC = () => {
 
   const currentIssues = items.find((item) => item.id === `${repoName}/${projectName}`);
 
-  const findContainer = (id: UniqueIdentifier) => {
+  const findContainer = (id: UniqueIdentifier): ColumnsDataType | undefined => {
+
     if (lists.some((list) => list.cards && list.cards.some((card) => card.id === id))) {
       return lists.find((list) => list.cards.some((card) => card.id === id));
     }
